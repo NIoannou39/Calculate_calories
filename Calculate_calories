@@ -1,0 +1,42 @@
+def calculate_calories(weight, height_feet, height_inches, age, gender, activity, goal):
+    # Convert height to inches
+    height = (height_feet * 12) + height_inches
+    
+    # Harris-Benedict equation constants
+    if gender == "male":
+        bmr = 88.362 + (4.799 * height) + (13.397 * weight) - (5.677 * age)
+    else:
+        bmr = 447.593 + (3.098 * height) + (9.247 * weight) - (4.330 * age)
+    
+    # Apply activity factor (sedentary to very active)
+    activity_factors = {
+        "sedentary": 1.2,
+        "lightly active": 1.375,
+        "moderately active": 1.55,
+        "very active": 1.725
+    }
+    activity_factor = activity_factors[activity]
+
+    # Calculate total daily calorie intake based on goal
+    if goal == "lose":
+        daily_calories = bmr * activity_factor - 500  # Create a calorie deficit for weight loss
+    elif goal == "gain":
+        daily_calories = bmr * activity_factor + 500  # Create a calorie surplus for weight gain
+    else:
+        daily_calories = bmr * activity_factor  # Maintain current weight
+    
+    return daily_calories
+
+# Input from user
+weight_pounds = float(input("Enter your weight (pounds): "))
+height_feet = int(input("Enter your height (feet): "))
+height_inches = int(input("Enter your height (inches): "))
+age = int(input("Enter your age: "))
+gender = input("Enter your gender (male/female): ").lower()
+activity = input("Enter your activity level (sedentary/lightly active/moderately active/very active): ").lower()
+goal = input("Do you want to gain, lose, or maintain weight? ").lower()
+
+# Calculate and display daily calorie intake
+daily_calories = calculate_calories(weight_pounds, height_feet, height_inches, age, gender, activity, goal)
+print(f"You should consume approximately {daily_calories:.2f} calories per day to {goal} weight.")
+
